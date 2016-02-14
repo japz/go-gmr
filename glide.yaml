@@ -2,3 +2,4 @@ package: github.com/japz/go-gmr
 import:
 - package: github.com/PuerkitoBio/goquery
 - package: gopkg.in/alecthomas/kingpin.v2
+- package: github.com/cheggaaa/pb

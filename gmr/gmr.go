@@ -1,9 +1,13 @@
 package gmr
 
 import (
+    "fmt"
+    "github.com/cheggaaa/pb"
     "github.com/PuerkitoBio/goquery"
     "io"
+    "io/ioutil"
     "net/http"
+    "os"
     "strconv"
     "time"
 )
@@ -13,15 +17,15 @@ const timeout = 10 // Max time in seconds to wait for gmr
 const concurrency = 5 // Max concurrent requests to gmr
 
 type Player struct {
-    name string
-    civ string
-    turn_order int
+    Name string
+    Civ string
+    Turn_order int
 }
 
 type Game struct {
-    id string
-    name string
-    players []Player // First player is current player
+    Id string
+    Name string
+    Players []Player // First player is current player
 }
 
 func GetGame(game_id string, c chan Game) {
@@ -56,10 +60,10 @@ func GetGame(game_id string, c chan Game) {
 
     // Turn order is not included in the current player properties. Derive it from the non-active players.
     var current_player_turn_order int
-    if players[0].turn_order == 0 {
+    if players[0].Turn_order == 0 {
         current_player_turn_order = len(players) - 1
     } else {
-        current_player_turn_order = players[0].turn_order - 1
+        current_player_turn_order = players[0].Turn_order - 1
     }
 
     // Grab info about current player
@@ -90,4 +94,26 @@ func GetGames(game_ids ...string) []Game {
         }
     }
     return games
+}
+
+func GetSaveFile(api_key string, game_id string, download_to string, progressbar bool) {
+    url := gmr_url + fmt.Sprintf("api/Diplomacy/GetLatestSaveFileBytes?authKey=%s&gameId=%s", api_key, game_id)
+    out_path := fmt.Sprintf("%s/GMR-%s.Civ5Save", download_to, game_id)
+    out, _ := os.Create(out_path)
+    defer out.Close()
+
+    resp, _ := http.Get(url)
+    defer resp.Body.Close()
+
+    length, _ := strconv.Atoi(resp.Header.Get("Content-Length"))
+    in := resp.Body
+
+    if progressbar {
+        bar := pb.New(length).SetUnits(pb.U_BYTES)
+        bar.Start()
+        in = ioutil.NopCloser(bar.NewProxyReader(resp.Body))
+    }
+
+    n, _ := io.Copy(out, in)
+    fmt.Printf("%d bytes downloaded to %s\n", n, out_path)
 }
