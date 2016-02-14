@@ -24,5 +24,6 @@ _testmain.go
 *.prof
 
 vendor/*
+bin/*
 *.Civ5Save
 

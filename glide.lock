@@ -1,5 +1,5 @@
-hash: d85a2fbf437979764dca7aced6d055f80f8a14239414d0e27e22747e418c2eeb
-updated: 2016-02-14T09:44:04.022586729+01:00
+hash: 95c84488d67cc0e4d76a0c29d8565ae8c85fea37ca115c80e309790a9947061e
+updated: 2016-02-14T11:51:42.58888438+01:00
 imports:
 - name: github.com/alecthomas/template
   version: 14fd436dd20c3cc65242a9f396b61bfc8a3926fc
@@ -9,6 +9,10 @@ imports:
   version: 3ad29d1ad1c4f2023e355603324348cf1f4b2d48
 - name: github.com/cheggaaa/pb
   version: e67c2c3b91b15e81659790a8644e0d3b4a40271d
+- name: github.com/comail/colog
+  version: fa0611f228ad4add3d26aa2fd9583a81a841a186
+- name: github.com/olekukonko/ts
+  version: ecf753e7c962639ab5a1fb46f7da627d4c0a04b8
 - name: github.com/PuerkitoBio/goquery
   version: 81e6517758f0c0952bb05e728108cb7e19727097
 - name: golang.org/x/crypto
